@@ -56,3 +56,19 @@ def create_color_mask(hsv_image, color):
         mask = cv2.bitwise_or(mask, range_mask)
 
     return mask
+
+def clean_mask(mask):
+    # Use a small kernel to avoid removing distant cubes.
+    kernel = np.ones((3, 3), dtype=np.uint8)
+
+    # Remove isolated white pixels and small noisy regions.
+    cleaned_mask = cv2.morphologyEx(
+        mask, cv2.MORPH_OPEN, kernel
+    )
+
+    # Fill small gaps in the remaining white regions.
+    cleaned_mask = cv2.morphologyEx(
+        cleaned_mask, cv2.MORPH_CLOSE, kernel
+    )
+
+    return cleaned_mask
