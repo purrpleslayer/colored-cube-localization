@@ -72,3 +72,15 @@ def clean_mask(mask):
     )
 
     return cleaned_mask
+
+def find_color_regions(mask, min_area=20):
+    # TODO: Find contours in the cleaned binary mask.
+    # TODO: Filter out regions smaller than the minimum area.
+    # TODO: Calculate bounding boxes and center coordinates.
+    # TODO: Return the detected regions
+
+    pass
+
+
+# TODO: Combine color masking, cleanup, and contour detection
+# into a function that returns labeled cube candidates.
