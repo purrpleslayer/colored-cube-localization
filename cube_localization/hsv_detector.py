@@ -32,3 +32,27 @@ DRAW_COLORS = {
     "green": (0, 255, 0),
 }
 
+def create_color_mask(hsv_image, color):
+    # Check that the requested colour is supported.
+    if color not in HSV_RANGES:
+        raise ValueError(f"Unsupported color: {color}")
+
+    # Start with a black mask that matches the image dimensions.
+    mask = np.zeros(hsv_image.shape[:2], dtype=np.uint8)
+
+    # Check each HSV range for the selected colour.
+    # Red has two ranges so we need to check both.
+    for lower, upper in HSV_RANGES[color]:
+
+        # Find pixels within the current HSV range.
+        # Matching pixels turn white (255), while the rest stay black (0).
+        range_mask = cv2.inRange(
+            hsv_image,
+            np.array(lower, dtype=np.uint8),
+            np.array(upper, dtype=np.uint8)
+        )
+
+        # Combine the matching pixels into a single mask.
+        mask = cv2.bitwise_or(mask, range_mask)
+
+    return mask
